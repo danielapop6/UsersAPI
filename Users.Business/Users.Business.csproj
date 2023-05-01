@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Users.DataAccess\Users.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Logic\" />
-  </ItemGroup>
-
 </Project>

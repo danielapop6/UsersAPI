@@ -3,7 +3,7 @@
 public interface IUsersService
 {
     Task<string> GenerateOTPForUser(Guid userId);
-
+    Task MarkOTPAsUsed(Guid userId);
     Task SaveUserAuthorizationCode(Guid userId, string code);
-    Task<bool> ValidateOTPForUser(Guid userId);
+    Task<bool> ValidateOTPForUser(Guid userId, string authorizationCode);
 }
