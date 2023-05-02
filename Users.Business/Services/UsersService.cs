@@ -78,7 +78,7 @@ public class UsersService : IUsersService
                 AuthorizationCode = code,
                 UserId = userId,
                 InsertDateTime = DateTime.Now,
-                ExpiryDateTime = DateTime.Now.AddSeconds(Constants.OTPExpirationTimeInSeconds),
+                ExpiryDateTime = DateTime.Now.AddSeconds(Constants.OTPTrustedTimeInSeconds),
                 Status = (int)AuthorizationCodeStatus.UNUSED
             };
 
@@ -88,7 +88,7 @@ public class UsersService : IUsersService
         {
             authorization.AuthorizationCode = code;
             authorization.InsertDateTime = DateTime.Now;
-            authorization.ExpiryDateTime = DateTime.Now.AddSeconds(Constants.OTPExpirationTimeInSeconds);
+            authorization.ExpiryDateTime = DateTime.Now.AddSeconds(Constants.OTPTrustedTimeInSeconds);
             authorization.Status = (int)AuthorizationCodeStatus.UNUSED;
 
             _userAuthorizationsRepository.Update(authorization);
