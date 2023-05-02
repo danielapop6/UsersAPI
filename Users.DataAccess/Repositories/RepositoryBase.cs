@@ -13,9 +13,9 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
         this.RepositoryContext = repositoryContext;
     }
 
-    public async Task<T> FindByCondition(Expression<Func<T, bool>> expression)
+    public T? FindByCondition(Expression<Func<T, bool>> expression)
     {
-        return await RepositoryContext.Set<T>().FirstOrDefaultAsync(expression);
+        return RepositoryContext.Set<T>().FirstOrDefault(expression);
     }
 
     public async Task Create(T entity) => await RepositoryContext.Set<T>().AddAsync(entity);

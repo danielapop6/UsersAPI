@@ -48,7 +48,7 @@ public class UsersService : IUsersService
 
     public async Task<string> GenerateOTPForUser(Guid userId)
     {
-        var user = _usersRepository.FindByCondition(user => user.Id == userId);
+        var user = Users.FindByCondition(user => user.Id == userId);
 
         if (user == null)
         {
@@ -62,14 +62,14 @@ public class UsersService : IUsersService
 
     public async Task SaveUserAuthorizationCode(Guid userId, string code)
     {
-        var user = _usersRepository.FindByCondition(user => user.Id == userId);
+        var user = Users.FindByCondition(user => user.Id == userId);
 
         if (user == null)
         {
             return;
         }
 
-        var authorization = await _userAuthorizationsRepository.FindByCondition(userAuthorization => userAuthorization.UserId == userId);
+        var authorization = UserAuthorizations.FindByCondition(userAuthorization => userAuthorization.UserId == userId);
 
         if (authorization == null)
         {
@@ -82,7 +82,7 @@ public class UsersService : IUsersService
                 Status = (int)AuthorizationCodeStatus.UNUSED
             };
 
-            await _userAuthorizationsRepository.Create(userAuthorization);
+            await UserAuthorizations.Create(userAuthorization);
         }
         else
         {
@@ -91,15 +91,15 @@ public class UsersService : IUsersService
             authorization.ExpiryDateTime = DateTime.Now.AddSeconds(Constants.OTPTrustedTimeInSeconds);
             authorization.Status = (int)AuthorizationCodeStatus.UNUSED;
 
-            _userAuthorizationsRepository.Update(authorization);
+            UserAuthorizations.Update(authorization);
         }
 
         await Save();
     }
 
-    public async Task<bool> ValidateOTPForUser(Guid userId, string code)
+    public bool ValidateOTPForUser(Guid userId, string code)
     {
-        var authorization = await _userAuthorizationsRepository.FindByCondition(userAuthorization => userAuthorization.UserId == userId);
+        var authorization = UserAuthorizations.FindByCondition(userAuthorization => userAuthorization.UserId == userId);
 
         if (authorization == null)
         {
@@ -126,7 +126,7 @@ public class UsersService : IUsersService
 
     public async Task MarkOTPAsUsed(Guid userId)
     {
-        var authorization = await _userAuthorizationsRepository.FindByCondition(userAuthorization => userAuthorization.UserId == userId);
+        var authorization = UserAuthorizations.FindByCondition(userAuthorization => userAuthorization.UserId == userId);
 
         if (authorization == null)
         {
@@ -135,7 +135,7 @@ public class UsersService : IUsersService
 
         authorization.Status = (int)AuthorizationCodeStatus.USED;
 
-        _userAuthorizationsRepository.Update(authorization);
+        UserAuthorizations.Update(authorization);
 
         await Save();
     }

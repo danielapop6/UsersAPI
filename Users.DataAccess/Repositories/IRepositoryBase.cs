@@ -8,5 +8,5 @@ public interface IRepositoryBase<T>
 
     void Update(T entity);
 
-    Task<T> FindByCondition(Expression<Func<T, bool>> expression);
+    T? FindByCondition(Expression<Func<T, bool>> expression);
 }

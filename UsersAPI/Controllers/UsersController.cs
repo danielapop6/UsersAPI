@@ -16,7 +16,7 @@ public class UsersController : ControllerBase
         _usersService = usersService;
     }
 
-    [HttpPost]
+    [HttpPost("GenerateOTPForUser")]
     public async Task<string> GenerateOTPForUser(OTPRequest request)
     {
         try
@@ -43,7 +43,7 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpPost("ValidateOTPForUser")]
     public async Task<bool> ValidateOTPForUser(OTPValidationRequest request)
     {
         try
@@ -54,7 +54,7 @@ public class UsersController : ControllerBase
             }
 
 
-            bool isValidCode = await _usersService.ValidateOTPForUser(request.UserId, request.AuthorizationCode);
+            bool isValidCode = _usersService.ValidateOTPForUser(request.UserId, request.AuthorizationCode);
             if (isValidCode)
             {
                 await _usersService.MarkOTPAsUsed(request.UserId);
